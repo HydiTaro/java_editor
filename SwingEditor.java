@@ -1,50 +1,50 @@
-import java.awt.Component;
-import java.awt.ScrollPane;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.*;
-import javax.swing.table.TableColumn;
 
 import  java.io.*;
 
-public class Editor {
+public class SwingEditor extends JFrame{
 
-    private JFrame frame;
-    private JTable tablePanel;
     private String tansyuku = " 短縮よみ";
 
     // private static final Logger logger = LoggerFactory.getLogger(Editor.class);
+    /**
+     * サブクラスのコンストラクタを呼び出す際は、スーパークラスの引数なしコンストラクタが呼び出される。
+     * 例外は、明示した場合のみ
+     */
+    public SwingEditor(String title){
+        setTitle(title);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setBounds(200,200,500,500);
+        setVisible(true);
+    }
 
-    public void show() throws IOException{
-        frame = new JFrame("Java Editor");
-        frame.addWindowListener(
-            new WindowAdapter() {
-                public void windowClosing(WindowEvent e){
-                    System.exit(0);
-                }
-            });
-        // tablePanel = new JTable();
-        // for(int i=0;i<3;i++){
-        //     tablePanel.addColumn(new TableColumn(i));
-        // }
+    public static void main(String[] args) throws IOException {
+        
+        SwingEditor e = new SwingEditor("SwingEditor");
+        e.start();
+    }
+    public void start() throws FileNotFoundException, IOException{
+        
         // ComponentクラスとJSplitPaneの違い
-        JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-            new ScrollPane(ScrollPane.SCROLLBARS_NEVER),
-            new ScrollPane(ScrollPane.SCROLLBARS_ALWAYS));
-        frame.add(split);
+        // JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
+        //     new ScrollPane(ScrollPane.SCROLLBARS_NEVER),
+        //     new ScrollPane(ScrollPane.SCROLLBARS_ALWAYS));
+        // frame.add(split);
 
         var text1 = new JTextField();
-        frame.add("North",text1);
+        add("North",text1);
         
         var text2 = new JTextField();
-        frame.add("South",text2);
+        add("South",text2);
 
         var btn1 = new JButton("辞書変換");
         // インデックス文字が自動生成されるボタン
         // btn1.addActionListener(ea -> text2.setText(text1.getText().substring(0, 2)+"  "+text1.getText()+tansyuku));
         btn1.addActionListener(ea -> calcIndexString(text1, text2));
-        frame.add(btn1);
+        add(btn1);
         // インデックス文字を登録できるボタン
         var textForIndex = new JTextField();
         var btn2 = new JButton("");
@@ -57,10 +57,7 @@ public class Editor {
         // 登録予定のレコードをファイルに追加して保存
         // 既存の辞書ファイルの辞書登録自動化
         
-        frame.add(loadTargetFile("C:\\Users\\a3123\\Documents\\Archives\\user_dictionary\\aa.txt"));
-
-        frame.setSize(1000,1000);
-        frame.setVisible(true);
+        add(loadTargetFile("C:\\Users\\a3123\\Documents\\Archives\\user_dictionary\\aa.txt"));
     }
     
     /**
@@ -78,9 +75,6 @@ public class Editor {
     }
     /**
      * 登録用レコードが作成される_インデックス文字は手入力
-     * @param indexString
-     * @param input
-     * @param output
      */
     private void calcIndexString(String indexString,JTextField input,JTextField output){
         output.setText(indexString+"    "+input.getText()+"   "+tansyuku);
@@ -89,7 +83,6 @@ public class Editor {
      * 辞書ファイル読み込み
      * TODOファイルの改行を一行と見做してしまう問題
      * TODO文字コードの管理
-     * 
      */
     private JTextArea loadTargetFile(String filePath) throws FileNotFoundException, IOException{
         System.out.println("start load");
@@ -119,14 +112,6 @@ public class Editor {
      */
     private void writeFile(String filePath){
         //JTextAreaのthisとは？
-    }
-    
-    public static void main(String[] args) throws IOException {
-        
-        Editor e = new Editor();
-        // if(args != null && args.length == 1){
-            
-        // }
-        e.show();
+
     }
 }

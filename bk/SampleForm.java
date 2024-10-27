@@ -1,3 +1,4 @@
+package bk;
 import javax.swing.*;
 
 public class SampleForm {
